@@ -1,21 +1,21 @@
 # 🤖 AI Email Assistant
 
-An AI-powered email automation workflow built with **n8n** and **OpenAI**.
+An AI-powered email automation workflow built with **n8n**, **OpenAI**, and **Gmail**.
 
 ## 📌 Overview
 
-This workflow automatically processes incoming emails using AI.
+This workflow demonstrates how artificial intelligence can automatically analyze customer emails, classify requests, and generate professional draft replies before sending them.
 
-When a new email arrives, the assistant analyzes its content, classifies the request, and prepares an intelligent response, reducing manual work and improving response times.
+Perfect for businesses that receive a high volume of customer inquiries and want to reduce response time.
 
 ## ✨ Features
 
-- 📩 Detect new incoming emails
-- 🤖 AI email analysis
-- 🏷️ Automatic email classification
-- ✍️ Generate draft replies
-- 📧 Notify the business
-- ⚡ Built with n8n automation
+- 📥 Simulate incoming customer emails
+- 🤖 Analyze email content with OpenAI
+- 🏷️ Automatically classify requests
+- ✍️ Generate professional email drafts
+- 📧 Create Gmail draft replies
+- ⚡ End-to-end automation with n8n
 
 ## 🛠️ Tech Stack
 
@@ -29,24 +29,31 @@ When a new email arrives, the assistant analyzes its content, classifies the req
 ## 🔄 Workflow
 
 ```text
-Gmail Trigger
+Manual Trigger
+      ↓
+Sample Customer Email
       ↓
 OpenAI
       ↓
-Classify Email
+Classify Request
       ↓
-IF
- ├── Quote Request
- │       ↓
- │  Generate Draft
- │       ↓
- │  Notify Business
- │
- └── Other
-         ↓
-     End
+Generate Reply
+      ↓
+Create Gmail Draft
 ```
 
-## 📂 Project Goal
+## 💼 Real Business Use Cases
 
-Demonstrate how AI can automate customer email handling for small businesses, reducing response time and manual work.
+- Customer support
+- Sales inquiries
+- Quote requests
+- Appointment requests
+- General customer communication
+
+## 🎯 Project Goal
+
+Demonstrate how AI can automate business email management by reducing manual work and improving response quality.
+
+---
+
+Developed as part of my Automation & AI portfolio.
