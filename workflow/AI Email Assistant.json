@@ -1,0 +1,179 @@
+{
+  "name": "AI Email Assistant",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "32f98162-4eb7-4330-9ccb-6da9b089e4c7",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d7b05cee-ee4e-4d20-9f22-7fc4200deb33",
+              "name": "customer_name",
+              "value": "John Smith",
+              "type": "string"
+            },
+            {
+              "id": "b1668a9d-0023-430f-85ac-8ee7ef85fc26",
+              "name": "customer_email",
+              "value": "john.smith@email.com",
+              "type": "string"
+            },
+            {
+              "id": "59c6dcde-48d3-4554-9f18-ed3b8062d4f0",
+              "name": "email_body",
+              "value": "Hello,  I'm interested in getting a quote for automating appointment bookings for my barbershop. We receive around 30 bookings per day and would like to know your pricing and how long implementation would take.  Thank you, John Smith",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "569f6550-d840-4cff-b6e6-f80fd99c5cc1",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.email_body }}",
+        "options": {
+          "systemMessage": "You are an AI assistant for a business.\n\nRead the customer's email carefully.\n\nYour tasks are:\n- Understand what the customer wants.\n- Classify the request as:\n  - Quote Request\n  - Support Request\n  - Appointment Request\n  - General Inquiry\n- Write a professional, friendly reply.\n\nImportant rules:\n- Never invent prices, products, or services.\n- Never promise anything that was not mentioned.\n- If pricing is requested, explain that a member of the team will prepare a personalized quote.\n- Keep the reply concise and professional.\n\nReturn only the email reply."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "0843dc25-8203-4c7f-9d11-f746b596b8b8",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        288,
+        208
+      ],
+      "id": "88fd8e9c-ec36-400a-9627-80d378b5cc26",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "Re: Your Quote Request",
+        "message": "={{ $json.output }}",
+        "options": {
+          "sendTo": "={{ $('Edit Fields').item.json.customer_email }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        768,
+        0
+      ],
+      "id": "ff58191a-6888-48db-b6e7-c8dc17b83adb",
+      "name": "Create a draft",
+      "webhookId": "07dca74d-83c2-4000-9b45-ca5041930d11",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YibYTZz3VMEvQvcd",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Create a draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "e9deb2be-65ac-40d3-99fc-c4dc1feeab51",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b20b4e4e6d9a549f18ffc03c66a1e542cb76e73d5bbb83826e79324a4717d6f5"
+  },
+  "nodeGroups": [],
+  "id": "HnKXHaFX8dZzuCyk",
+  "tags": []
+}
